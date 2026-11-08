@@ -1,1 +1,57 @@
-<h1>EC02 - Funcionários</h1>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastro de funcionários | Startup de Tecnologia</title>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Startup de Tecnologia</h1>
+
+    <section>
+      <h2>Cadastro de funcionários</h2>
+
+      <form id="formulario-funcionario" novalidate>
+        <p>
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" required>
+        </p>
+        <p>
+          <label for="idade">Idade</label>
+          <input id="idade" name="idade" type="number" min="1" step="1" required>
+        </p>
+        <p>
+          <label for="cargo">Cargo</label>
+          <input id="cargo" name="cargo" type="text" required>
+        </p>
+        <p>
+          <label for="salario">Salário</label>
+          <input id="salario" name="salario" type="number" min="0" step="any" required>
+        </p>
+
+        <p id="erro" role="alert"></p>
+        <button id="salvar" type="submit">Cadastrar</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Funcionários cadastrados</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Cargo</th>
+            <th scope="col">Salário</th>
+          </tr>
+        </thead>
+        <tbody id="linhas-funcionarios"></tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
