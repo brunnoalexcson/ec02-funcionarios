@@ -68,6 +68,10 @@ const mensagemErro = document.getElementById("erro");
 const botaoSalvar = document.getElementById("salvar");
 const botaoCancelar = document.getElementById("cancelar");
 const linhasFuncionarios = document.getElementById("linhas-funcionarios");
+const listaSalariosAcima = document.getElementById("salarios-acima");
+const mediaSalarial = document.getElementById("media-salarial");
+const listaCargos = document.getElementById("cargos-unicos");
+const listaNomes = document.getElementById("nomes-maiusculos");
 
 function formatarMoeda(valor) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -159,7 +163,7 @@ const excluirFuncionario = (id) => {
     voltarAoCadastro();
   }
 
-  renderizarTabela();
+  atualizarPagina();
 };
 
 function renderizarTabela() {
@@ -202,6 +206,56 @@ function renderizarTabela() {
   });
 }
 
+function renderizarLista(lista, textos) {
+  lista.replaceChildren();
+  textos.forEach((texto) => {
+    const item = document.createElement("li");
+    item.textContent = texto;
+    lista.append(item);
+  });
+}
+
+function renderizarRelatorios() {
+  const salariosAcima = funcionarios
+    .filter((funcionario) => funcionario.salario > 5000)
+    .map((funcionario) => funcionario.toString());
+
+  renderizarLista(
+    listaSalariosAcima,
+    salariosAcima.length > 0
+      ? salariosAcima
+      : ["Nenhum funcionário com salário acima de R$ 5.000,00."]
+  );
+
+  if (funcionarios.length === 0) {
+    mediaSalarial.textContent = "Não há funcionários para calcular a média.";
+  } else {
+    const soma = funcionarios.reduce((total, funcionario) => total + funcionario.salario, 0);
+    mediaSalarial.textContent = formatarMoeda(soma / funcionarios.length);
+  }
+
+  const cargosVistos = new Set();
+  const cargosUnicos = funcionarios
+    .map((funcionario) => funcionario.cargo)
+    .filter((cargo) => {
+      const chave = cargo.toLocaleLowerCase("pt-BR");
+      if (cargosVistos.has(chave)) return false;
+
+      cargosVistos.add(chave);
+      return true;
+    });
+
+  renderizarLista(listaCargos, cargosUnicos.length > 0 ? cargosUnicos : ["Nenhum cargo cadastrado."]);
+
+  const nomes = funcionarios.map((funcionario) => funcionario.nome.toLocaleUpperCase("pt-BR"));
+  renderizarLista(listaNomes, nomes.length > 0 ? nomes : ["Nenhum funcionário cadastrado."]);
+}
+
+function atualizarPagina() {
+  renderizarTabela();
+  renderizarRelatorios();
+}
+
 botaoSalvar.onclick = function (evento) {
   evento.preventDefault();
 
@@ -214,7 +268,7 @@ botaoSalvar.onclick = function (evento) {
     atualizarFuncionario(funcionarioEmEdicao.id, dados);
   }
 
-  renderizarTabela();
+  atualizarPagina();
   voltarAoCadastro();
 };
 
@@ -222,4 +276,4 @@ botaoCancelar.onclick = function () {
   voltarAoCadastro();
 };
 
-renderizarTabela();
+atualizarPagina();
