@@ -125,18 +125,22 @@ function editarFuncionario(funcionario) {
   campoNome.focus();
 }
 
-const cadastrarFuncionario = function ({ nome, idade, cargo, salario }) {
+const cadastrarFuncionario = ({ nome, idade, cargo, salario }) => {
   const funcionario = new Funcionario(nome, idade, cargo, salario);
   funcionarios.push(funcionario);
 };
 
-const buscarPorId = function (id) {
-  return funcionarios.find(function (funcionario) {
-    return funcionario.id === id;
-  });
-};
+// Exercício 3 – substituindo uma função anônima tradicional por uma arrow function
+// Antes:
+// const buscarPorId = function (id) {
+//   return funcionarios.find(function (funcionario) {
+//     return funcionario.id === id;
+//   });
+// };
+// Depois:
+const buscarPorId = (id) => funcionarios.find((funcionario) => funcionario.id === id);
 
-const atualizarFuncionario = function (id, dados) {
+const atualizarFuncionario = (id, dados) => {
   const funcionario = buscarPorId(id);
   if (!funcionario) return;
 
@@ -146,10 +150,8 @@ const atualizarFuncionario = function (id, dados) {
   funcionario.salario = dados.salario;
 };
 
-const excluirFuncionario = function (id) {
-  const indice = funcionarios.findIndex(function (funcionario) {
-    return funcionario.id === id;
-  });
+const excluirFuncionario = (id) => {
+  const indice = funcionarios.findIndex((funcionario) => funcionario.id === id);
   if (indice === -1) return;
 
   funcionarios.splice(indice, 1);
@@ -170,7 +172,7 @@ function renderizarTabela() {
     return;
   }
 
-  funcionarios.forEach(function (funcionario) {
+  funcionarios.forEach((funcionario) => {
     const linha = linhasFuncionarios.insertRow();
     linha.insertCell().textContent = funcionario.id;
     linha.insertCell().textContent = funcionario.nome;
